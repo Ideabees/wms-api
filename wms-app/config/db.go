@@ -26,7 +26,7 @@ func GetDBConnection() (*sql.DB, error){
 		log.Fatal("Failed to connect to DB:", err)
 		return conn, err
 	}
-	defer conn.Close()
+	//defer conn.Close()
 
 	if err = conn.Ping(); err != nil {
 		log.Fatal("DB is unreachable:", err)

@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 
 	"wms-app/config"
+	"wms-app/internal/repository"
+	"wms-app/internal/repository/migrations"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -99,11 +102,21 @@ func generateOTPHandler(c *gin.Context) {
 	    fmt.Println(maskedData)
 	*/
 	// In real applications, send OTP via SMS/Email
+	// save in db
+	_, dbError := repository.SetOTP(otp, req.MobileNumber)
+	if dbError != nil {
+		c.JSON(http.StatusFailedDependency, gin.H{
+			"status":       "failed",
+			"mobile_numer": req.MobileNumber,
+			"msg":          otp,
+			"error_code":   ""})
+	} else {
 	c.JSON(http.StatusOK, gin.H{
 		"status":       "success",
 		"mobile_numer": req.MobileNumber,
 		"msg":          otp,
 		"error_code":   ""})
+	}
 }
 
 func verifyOTPHandler(c *gin.Context) {
@@ -131,6 +144,17 @@ func verifyOTPHandler(c *gin.Context) {
 		return
 	}*/
 
+	DbOtp, dbErr := repository.GetOTP(req.MobileNumber)
+	if dbErr != nil {
+		fmt.Println("Error while fetching otp from db", dbErr)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+		return
+	}
+	if DbOtp != req.OTP {
+		fmt.Println("otp does not matched", DbOtp, req.OTP)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+		return
+	}
 	// OTP Verified -> Generate JWT token
 	token, err := createJWT(req.MobileNumber)
 	if err != nil {
@@ -187,9 +211,17 @@ func authMiddleware() gin.HandlerFunc {
 
 func main() {
 	// create db connection
-	_, err := config.GetDBConnection()
+	conn, err := config.GetDBConnection()
 	if err != nil {
 		fmt.Println("DB not initialized")
+		os.Exit(1)
+	}
+
+	// create table
+	dbErr := migrations.InitiateDB(conn)
+	if dbErr != nil {
+		fmt.Println("Error in creating tables")
+		os.Exit(1)
 	}
 	fmt.Println("Connected to DB")
 	r := gin.Default()
