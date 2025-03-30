@@ -7,6 +7,8 @@ import (
 	"sync"
 	"time"
 
+	"wms-app/config"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/time/rate"
@@ -184,6 +186,12 @@ func authMiddleware() gin.HandlerFunc {
 }
 
 func main() {
+	// create db connection
+	_, err := config.GetDBConnection()
+	if err != nil {
+		fmt.Println("DB not initialized")
+	}
+	fmt.Println("Connected to DB")
 	r := gin.Default()
 	v1 := r.Group("/api/wms/v1")
 	{

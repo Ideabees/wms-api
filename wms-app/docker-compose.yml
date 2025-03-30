@@ -1,11 +1,33 @@
 version: "3.8"
 
 services:
-  wms-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: kripadev/wms-app:latest
+  db:
+    image: postgres:16
+    container_name: gin_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: wmsuser
+      POSTGRES_PASSWORD: wmspassword
+      POSTGRES_DB: wmsdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: wms-app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: wmsuser
+      DB_PASSWORD: wmspassword
+      DB_NAME: wmsdb
+      DB_PORT: 5432
     ports:
       - "8080:8080"
-    restart: always
+
+volumes:
+  postgres_data:
