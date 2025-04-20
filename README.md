@@ -100,6 +100,6 @@ Response:
 }
 
 {
-    "message": "Customer succefully created",
+    "message": "DB insertion Failed",
     "status": "Failed"
 }
