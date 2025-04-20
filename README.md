@@ -34,7 +34,7 @@ Response:
     },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imt0MUBnbWFpbC5jb20iLCJleHAiOjE3NDUzODc5NTEsInN1YiI6NX0.2KII0cWBM3n8-x_XqR9_I-D_ataz8akoyscQRmRMUDs"
 }
-}
+
 
 Login:
 curl --location 'http://localhost:8080/api/login' \
@@ -102,4 +102,51 @@ Response:
 {
     "message": "DB insertion Failed",
     "status": "Failed"
+}
+
+Get Customers:
+curl --location 'http://localhost:8080/v1/api/customers' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imt0MUBnbWFpbC5jb20iLCJleHAiOjE3NDU0MjMwNzYsInVzZXJJZCI6IjBjYzRmYjJjLTZlNDUtNDkyOC1iNDA1LTFhMjVjOGRhOWY3NiJ9.ab9cKeb7DKgJY1fTjwprrYkhzVpCq443T01TzGnU3JY'
+
+Response:
+{
+    "data": [
+        {
+            "FirstName": "custom1",
+            "LastName": "sharma",
+            "MobileNumber": "7893456122",
+            "CreatedBy": "",
+            "UpdatedOn": "2025-04-20 15:46:48.238749 +0000 UTC"
+        },
+        {
+            "FirstName": "custom2",
+            "LastName": "sharma",
+            "MobileNumber": "7893456123",
+            "CreatedBy": "",
+            "UpdatedOn": "2025-04-20 15:48:01.354847 +0000 UTC"
+        },
+        {
+            "FirstName": "custom3",
+            "LastName": "sharma",
+            "MobileNumber": "7893456124",
+            "CreatedBy": "",
+            "UpdatedOn": "2025-04-20 15:48:15.235577 +0000 UTC"
+        },
+        {
+            "FirstName": "custom5",
+            "LastName": "sharma",
+            "MobileNumber": "7893456125",
+            "CreatedBy": "",
+            "UpdatedOn": "2025-04-20 15:49:16.67277 +0000 UTC"
+        },
+        {
+            "FirstName": "custom6",
+            "LastName": "sharma",
+            "MobileNumber": "7893456126",
+            "CreatedBy": "",
+            "UpdatedOn": "2025-04-20 16:50:33.093211 +0000 UTC"
+        }
+    ],
+    "message": "",
+    "status": "Success"
 }

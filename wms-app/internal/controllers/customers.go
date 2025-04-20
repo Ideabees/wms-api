@@ -11,11 +11,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateCustomers(c *gin.Context) {
+func CreateCustomer(c *gin.Context) {
 	userID := c.GetString("user_id")
 	//email := c.GetString("email")
 
-	var req request.CreateCustomersRequest
+	var req request.CreateCustomerRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -31,7 +31,7 @@ func CreateCustomers(c *gin.Context) {
 	}
 
 	// call service layer to insert the customer
-	msg, err := services.CreateCustomers(&custModel)
+	msg, err := services.CreateCustomer(&custModel)
 	if err != nil {
 		fmt.Println("DB insertion Failed", err)
 		c.JSON(http.StatusOK, gin.H{
@@ -42,6 +42,27 @@ func CreateCustomers(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Customer succefully created",
 			"status":  msg,
+		})
+	}
+}
+
+func GetCustomers(c *gin.Context) {
+	userID := c.GetString("user_id")
+
+	// call service layer to insert the customer
+	data, msg, err := services.GetCustomers(userID)
+	if err != nil {
+		fmt.Println("DB insertion Failed", err)
+		c.JSON(http.StatusOK, gin.H{
+			"message": "DB Operation Failed",
+			"status":  msg,
+			"data":    data,
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "",
+			"status":  msg,
+			"data":    data,
 		})
 	}
 }
