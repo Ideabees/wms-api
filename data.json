@@ -1,0 +1,86 @@
+{
+    "fisrt_name":"",
+    "last_name": "",
+    "email": "",
+    "mobile": "",
+    "role" : ""
+}
+
+//Response
+
+{
+    "fisrt_name":"",
+    "last_name": "",
+    "email": "",
+    "mobile": "",
+    "role" : "",
+    "created_by":"",
+    "created_at" :"",
+    "last_logged_in": "date time"
+}
+
+// get user
+{
+    "data" : [
+        {
+            "fisrt_name":"",
+            "last_name": "",
+            "email": "",
+            "mobile": "",
+            "role" : "",
+            "created_by":"",
+            "created_at" :"",
+            "last_logged_in": "date time"
+        },
+        {
+            "fisrt_name":"",
+            "last_name": "",
+            "email": "",
+            "mobile": "",
+            "role" : "",
+            "created_by":"",
+            "created_at" :"",
+            "last_logged_in": "date time"
+        }
+    ]
+}
+
+
+// Add customer - one by one
+// request 
+{
+"first_name":"",
+"last_name": "",
+"mobile": "",
+}
+
+// get customers
+{
+    "data": [
+        {
+            "fisrt_name":"",
+            "last_name": "",
+            "mobile": "",
+            "created_by":"",
+            "created_on":""
+            }
+    ]
+}
+
+// Add customer - by csv
+// upload api
+
+
+Hare Krishna Murari
+2:54 PM
+ideabees.tech@gmail.com 
+pass: Ideabees@tech123#$
+Hare Krishna Murari
+3:12 PM
+profile
+users
+add user
+email, mobile, first name, last name, role
+Hare Krishna Murari
+3:13 PM
+Role: Admin: 1, Manager: 2, Employee/Member: 3

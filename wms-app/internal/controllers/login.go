@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"net/http"
-	"wms-app/internal/models/request"
-	"wms-app/internal/models/dbModels"
-	"wms-app/internal/utils"
 	"wms-app/config"
+	"wms-app/internal/models/dbModels"
+	"wms-app/internal/models/request"
+	"wms-app/internal/models/response"
+	"wms-app/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,6 +29,17 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// build response
+	var response response.CreateUserRespone
+	response.UserId = user.UserId
+	response.FirstName = user.FirstName
+	response.MiddleName = user.MiddleName
+	response.LastName = user.LastName
+	response.Email = user.Email
+	response.MobileNumber = user.MobileNumber
+	response.CreatedAt = user.CreatedAt.String()
+	response.UpdatedAt = user.UpdatedAt.String()
+
 	token, err := utils.GenerateToken(user.ID, user.Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
@@ -36,6 +48,7 @@ func Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Login successful",
+		"data": response,
 		"token":   token,
 	})
 }

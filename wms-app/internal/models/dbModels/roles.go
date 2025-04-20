@@ -5,15 +5,16 @@ import (
 	"time"
 )
 
-type User struct {
+type Employee struct {
 	gorm.Model
-	UserId       string `gorm:"primaryKey;autoIncrement:false"`
+	EmployeeId   string `gorm:"primaryKey;autoIncrement:false"`
 	FirstName    string
-	MiddleName   string
 	LastName     string
-	Email        string `gorm:"unique"`
-	PasswordHash string
 	MobileNumber string `gorm:"unique"`
+	Email        string `gorm:"unique"`
+	Role         string
+	CreatedBy    string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
+	LastLoggedIn time.Time
 }

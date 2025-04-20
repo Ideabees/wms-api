@@ -27,8 +27,11 @@ func Register(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Password encryption failed"})
 		return
 	}
+	// Create UUID
+	id := utils.CreateUUID()
 
 	user := dbModels.User{
+		UserId: id,
 		FirstName:    req.FirstName,
 		MiddleName:   req.MiddleName,
 		LastName:     req.LastName,
@@ -37,7 +40,8 @@ func Register(c *gin.Context) {
 		MobileNumber: req.MobileNumber,
 	}
 
-	if err := services.CreateUser(&user); err != nil {
+	response, err := services.CreateUser(&user)
+	if  err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "User creation failed"})
 		return
 	}
@@ -50,6 +54,7 @@ func Register(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "User registered successfully",
+		"data" : response,
 		"token":   token,
 	})
 }
