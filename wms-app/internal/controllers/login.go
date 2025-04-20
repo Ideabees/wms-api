@@ -40,7 +40,7 @@ func Login(c *gin.Context) {
 	response.CreatedAt = user.CreatedAt.String()
 	response.UpdatedAt = user.UpdatedAt.String()
 
-	token, err := utils.GenerateToken(user.ID, user.Email)
+	token, err := utils.GenerateToken(user.UserId, user.Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
 		return

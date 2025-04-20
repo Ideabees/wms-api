@@ -11,9 +11,9 @@ import (
 
 var jwtKey = []byte("supersecretkey")
 
-func GenerateToken(userID uint, email string) (string, error) {
+func GenerateToken(userID string, email string) (string, error) {
 	claims := jwt.MapClaims{
-		"sub":   userID,
+		"userId":   userID,
 		"email": email,
 		"exp":   time.Now().Add(72 * time.Hour).Unix(),
 	}
@@ -66,7 +66,7 @@ func JWTMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("user_id", claims["sub"])
+		c.Set("user_id", claims["userId"])
 		c.Set("email", claims["email"])
 		c.Set("token_string", tokenStr)
 		c.Next()

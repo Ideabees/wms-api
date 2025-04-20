@@ -46,7 +46,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	token, err := utils.GenerateToken(user.ID, user.Email)
+	token, err := utils.GenerateToken(user.UserId, user.Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Token generation failed"})
 		return

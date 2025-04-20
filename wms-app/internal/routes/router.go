@@ -17,6 +17,7 @@ func SetupRoutes() *gin.Engine {
 	protected.Use(utils.JWTMiddleware())
 	{
 		protected.GET("/permissions", controllers.GetPermissions)
+		protected.POST("/create-customer", controllers.CreateCustomers)
 		protected.POST("/logout", controllers.Logout)
 	}
 	return r

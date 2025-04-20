@@ -82,3 +82,24 @@ Response:
 {
     "message": "Logged out successfully"
 }
+
+Add customer
+curl --location 'http://localhost:8080/v1/api/create-customer' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imt0MUBnbWFpbC5jb20iLCJleHAiOjE3NDU0MjMwNzYsInVzZXJJZCI6IjBjYzRmYjJjLTZlNDUtNDkyOC1iNDA1LTFhMjVjOGRhOWY3NiJ9.ab9cKeb7DKgJY1fTjwprrYkhzVpCq443T01TzGnU3JY' \
+--data '{
+    "first_name": "custom5",
+    "last_name" : "sharma",
+    "mobile_number": "7893456125"
+}'
+
+Response:
+{
+    "message": "Customer succefully created",
+    "status": "Success"
+}
+
+{
+    "message": "Customer succefully created",
+    "status": "Failed"
+}

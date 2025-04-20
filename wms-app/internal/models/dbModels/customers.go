@@ -11,7 +11,7 @@ type Customer struct {
 	FirstName    string
 	LastName     string
 	MobileNumber string `gorm:"unique"`
-	CreatedBy    string
+	UserId       string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
