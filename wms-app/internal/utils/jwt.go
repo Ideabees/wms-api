@@ -11,10 +11,12 @@ import (
 
 var jwtKey = []byte("supersecretkey")
 
-func GenerateToken(userID string, email string) (string, error) {
+func GenerateToken(userID string, email string, firstName string, lastName string) (string, error) {
 	claims := jwt.MapClaims{
 		"userId":   userID,
 		"email": email,
+		"firstName" : firstName,
+		"lastName" : lastName,
 		"exp":   time.Now().Add(72 * time.Hour).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

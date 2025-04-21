@@ -48,9 +48,11 @@ func CreateCustomer(c *gin.Context) {
 
 func GetCustomers(c *gin.Context) {
 	userID := c.GetString("user_id")
+	firstName := c.GetString("first_name")
+	lastName := c.GetString("last_name")
 
 	// call service layer to insert the customer
-	data, msg, err := services.GetCustomers(userID)
+	data, msg, err := services.GetCustomers(userID, firstName, lastName)
 	if err != nil {
 		fmt.Println("DB insertion Failed", err)
 		c.JSON(http.StatusOK, gin.H{

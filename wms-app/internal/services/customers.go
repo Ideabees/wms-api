@@ -18,7 +18,7 @@ func CreateCustomer(customer *dbModels.Customer) (string, error) {
 	return "Success", result.Error
 }
 
-func GetCustomers(userID string) ([]response.GetCustomer, string, error) {
+func GetCustomers(userID string, firstName string, lastName string) ([]response.GetCustomer, string, error) {
 
 	resp := []response.GetCustomer{}
 	var customers []dbModels.Customer
@@ -33,8 +33,10 @@ func GetCustomers(userID string) ([]response.GetCustomer, string, error) {
 		rsp.LastName = cust.LastName
 		rsp.MobileNumber = cust.MobileNumber
 		rsp.UpdatedOn = cust.UpdatedAt.String()
+		rsp.CreatedBy = firstName + " " + lastName
 		resp = append(resp, rsp)
 	}
+	// fetch user name from user id 
 	
 	return resp, "Success", nil
 }
