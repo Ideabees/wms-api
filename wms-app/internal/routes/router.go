@@ -11,7 +11,7 @@ func SetupRoutes() *gin.Engine {
 	r := gin.Default()
 
 	config := cors.DefaultConfig()
-    config.AllowOrigins = []string{"http://localhost:3000"} // Replace with your client's origin(s)
+    config.AllowOrigins = []string{"http://localhost:3000", "http://localhost:8080/api/register"} // Replace with your client's origin(s)
     config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
     config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
 
