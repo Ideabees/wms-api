@@ -68,3 +68,31 @@ func GetCustomers(c *gin.Context) {
 		})
 	}
 }
+
+
+func DeleteCustomers(c *gin.Context) {
+	//userID := c.GetString("user_id")
+	//email := c.GetString("email")
+
+	var req request.DeleteCustomer
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	fmt.Println("request is", req)
+	// call service layer to delete the customers
+	msg, err := services.DeleteCustomers(&req)
+	if err != nil {
+		fmt.Println("Deletion Failed", err)
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Deletion Failed",
+			"status":  msg,
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Customer succefully deleted",
+			"status":  msg,
+		})
+	}
+}

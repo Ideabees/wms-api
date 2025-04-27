@@ -2,6 +2,7 @@ package response
 
 
 type GetCustomer struct {
+	CustomerId string
 	FirstName    string
 	LastName     string
 	MobileNumber string
