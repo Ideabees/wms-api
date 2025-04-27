@@ -29,6 +29,7 @@ func SetupRoutes() *gin.Engine {
 		protected.POST("/customer", controllers.CreateCustomer)
 		protected.GET("/customers", controllers.GetCustomers)
 		protected.DELETE("/customers", controllers.DeleteCustomers)
+		protected.POST("/create_bulk_customers", controllers.CreateBulkCustomers)
 		protected.POST("/logout", controllers.Logout)
 	}
 	return r
