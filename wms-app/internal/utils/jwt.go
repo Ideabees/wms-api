@@ -1,9 +1,9 @@
 package utils
 
 import (
-	"time"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -13,11 +13,11 @@ var jwtKey = []byte("supersecretkey")
 
 func GenerateToken(userID string, email string, firstName string, lastName string) (string, error) {
 	claims := jwt.MapClaims{
-		"userId":   userID,
-		"email": email,
-		"firstName" : firstName,
-		"lastName" : lastName,
-		"exp":   time.Now().Add(72 * time.Hour).Unix(),
+		"userId":    userID,
+		"email":     email,
+		"firstName": firstName,
+		"lastName":  lastName,
+		"exp":       time.Now().Add(72 * time.Hour).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(jwtKey)
@@ -34,16 +34,23 @@ func BlacklistToken(token string) {
 	tokenBlacklist[token] = true
 }
 
-
 func JWTMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var tokenStr string
+
+		// First, check the "Authorization" header
 		authHeader := c.GetHeader("Authorization")
-		if !strings.HasPrefix(authHeader, "Bearer ") {
+		if strings.HasPrefix(authHeader, "Bearer ") {
+			tokenStr = strings.TrimPrefix(authHeader, "Bearer ")
+		} else {
+			// If there's no token in the header, check the cookies
+			tokenStr, _ = c.Cookie("token")
+		}
+
+		if tokenStr == "" {
 			c.AbortWithStatusJSON(401, gin.H{"error": "Authorization token missing or invalid"})
 			return
 		}
-
-		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
 
 		if IsTokenBlacklisted(tokenStr) {
 			c.AbortWithStatusJSON(401, gin.H{"error": "Token has been logged out"})
@@ -74,4 +81,3 @@ func JWTMiddleware() gin.HandlerFunc {
 		c.Next()
 	}
 }
-

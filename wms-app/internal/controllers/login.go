@@ -45,10 +45,20 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
 		return
 	}
+	// Set the token in an HTTP-only cookie
+	c.SetCookie(
+		"token",     // Cookie name
+		token,       // Cookie value
+		3600*24,     // MaxAge in seconds (1 day)
+		"/",         // Cookie path
+		"localhost", // Domain (adjust in production)
+		false,       // Secure (false for local, true for production with HTTPS)
+		true,        // HttpOnly
+	)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Login successful",
-		"data": response,
+		"data":    response,
 		"token":   token,
 	})
 }
@@ -61,4 +71,3 @@ func Logout(c *gin.Context) {
 		"message": "Logged out successfully",
 	})
 }
-
