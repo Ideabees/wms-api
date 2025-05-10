@@ -1,11 +1,11 @@
 package response
 
-
 type GetCustomer struct {
-	CustomerId string
+	CustomerId   string
 	FirstName    string
 	LastName     string
 	MobileNumber string
+	EmailID      string
 	CreatedBy    string
 	UpdatedOn    string
 }

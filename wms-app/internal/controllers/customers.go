@@ -28,6 +28,7 @@ func CreateCustomer(c *gin.Context) {
 		FirstName:    req.FirstName,
 		LastName:     req.LastName,
 		MobileNumber: req.MobileNumber,
+		EmailID:      req.EmailID,
 		UserId:       userID,
 	}
 
@@ -70,7 +71,6 @@ func GetCustomers(c *gin.Context) {
 	}
 }
 
-
 func DeleteCustomers(c *gin.Context) {
 	//userID := c.GetString("user_id")
 	//email := c.GetString("email")
@@ -100,41 +100,41 @@ func DeleteCustomers(c *gin.Context) {
 
 func CreateBulkCustomers(c *gin.Context) {
 	file, _, err := c.Request.FormFile("file")
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Upload csv File"})
-        return
-    }
-    defer file.Close()
-
-    // Get file extension
-    /*if err := processFile(file); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
-    }
-
-	cust_id := utils.CreateUUID()
-	custModel := dbModels.Customer{
-		CustomerId:   cust_id,
-		FirstName:    req.FirstName,
-		LastName:     req.LastName,
-		MobileNumber: req.MobileNumber,
-		UserId:       userID,
-	}
-
-	// call service layer to insert the customer
-	msg, err := services.CreateCustomer(&custModel)
 	if err != nil {
-		fmt.Println("DB insertion Failed", err)
-		c.JSON(http.StatusOK, gin.H{
-			"message": "DB insertion Failed",
-			"status":  msg,
-		})
-	} else { 
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Customer succefully created",
-			"status":  msg,
-		})
-	}*/
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Upload csv File"})
+		return
+	}
+	defer file.Close()
+
+	// Get file extension
+	/*if err := processFile(file); err != nil {
+	        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	        return
+	    }
+
+		cust_id := utils.CreateUUID()
+		custModel := dbModels.Customer{
+			CustomerId:   cust_id,
+			FirstName:    req.FirstName,
+			LastName:     req.LastName,
+			MobileNumber: req.MobileNumber,
+			UserId:       userID,
+		}
+
+		// call service layer to insert the customer
+		msg, err := services.CreateCustomer(&custModel)
+		if err != nil {
+			fmt.Println("DB insertion Failed", err)
+			c.JSON(http.StatusOK, gin.H{
+				"message": "DB insertion Failed",
+				"status":  msg,
+			})
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Customer succefully created",
+				"status":  msg,
+			})
+		}*/
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Customer succefully created",
 		"status":  "ok",

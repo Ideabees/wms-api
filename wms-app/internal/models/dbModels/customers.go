@@ -1,8 +1,9 @@
 package dbModels
 
 import (
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Customer struct {
@@ -10,8 +11,9 @@ type Customer struct {
 	CustomerId   string `gorm:"primaryKey;autoIncrement:false"`
 	FirstName    string
 	LastName     string
-	MobileNumber string `gorm:"unique"`
+	MobileNumber string
 	UserId       string
+	EmailID      string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }

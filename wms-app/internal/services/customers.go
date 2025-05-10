@@ -25,7 +25,7 @@ func GetCustomers(userID string, firstName string, lastName string) ([]response.
 	resp := []response.GetCustomer{}
 	var customers []dbModels.Customer
 	result := config.DB.Where("customers.user_id = ?", userID).Find(&customers)
-	if  result.Error != nil {
+	if result.Error != nil {
 		return resp, "Authorization Denied", result.Error
 	}
 
@@ -35,15 +35,15 @@ func GetCustomers(userID string, firstName string, lastName string) ([]response.
 		rsp.FirstName = cust.FirstName
 		rsp.LastName = cust.LastName
 		rsp.MobileNumber = cust.MobileNumber
+		rsp.EmailID = cust.EmailID
 		rsp.UpdatedOn = cust.UpdatedAt.String()
 		rsp.CreatedBy = firstName + " " + lastName
 		resp = append(resp, rsp)
 	}
-	// fetch user name from user id 
-	
+	// fetch user name from user id
+
 	return resp, "Success", nil
 }
-
 
 func DeleteCustomers(customerIds *request.DeleteCustomer) (string, error) {
 
