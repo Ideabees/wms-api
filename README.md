@@ -11,12 +11,12 @@ curl --location 'http://localhost:8080/api/register' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "first_name": "kripat2",
-	"middle_name" : "shankar",
-	"last_name": "sharma",
-	"email": "test1@gmail.com",
-	"password": "test1@123456",
-	"confirm_password": "test1@123456",
-	"mobile_number": "8956432134"
+    "middle_name" : "shankar",
+    "last_name": "sharma",
+    "email": "test1@gmail.com",
+    "password": "test1@123456",
+    "confirm_password": "test1@123456",
+    "mobile_number": "8956432134"
 }'
 
 Response:
@@ -162,7 +162,26 @@ Response:
     "status": "Success"
 }
 
-Bulk Customer Creation via CSV
-curl --location 'http://localhost:8080/v1/api/create_bulk_customers' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImV4cCI6MTc0NTk5NjE3NCwiZmlyc3ROYW1lIjoia3JpcGF0MiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiYzdkYzFjYWYtZDhhMi00YTQwLThjMjUtZjViNjdlNWE4M2JlIn0.aWenIv5n4TJJOb0s2BEAEx6g_AezQXPzbK85XBTw0cE' \
---form 'file=@"/C:/KripaDev/Coding/wms-api/Bulk-customer-data.xlsx"'
+## Bulk Customer Creation via Excel
+
+Endpoint:
+```
+POST http://localhost:8080/v1/api/create_bulk_customers
+```
+
+Headers:
+```
+Authorization: Bearer <your_token>
+```
+
+Form Data:
+```
+file=@"C:/KripaDev/Coding/wms-api/Bulk-customer-data.xlsx"
+```
+
+Example using curl (Windows path):
+```powershell
+curl --location 'http://localhost:8080/v1/api/create_bulk_customers' `
+--header 'Authorization: Bearer <your_token>' `
+--form 'file=@"C:/KripaDev/Coding/wms-api/Bulk-customer-data.xlsx"'
+```
