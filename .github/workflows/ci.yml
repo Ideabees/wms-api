@@ -27,10 +27,13 @@ jobs:
             ${{ runner.os }}-go-
       - name: Install dependencies
         run: go mod download
+        working-directory: wms-app
       - name: Build
-        run: go build -v -o wms-app ./wms-app/cmd
+        run: go build -v -o wms-app ./cmd
+        working-directory: wms-app
       - name: Run tests
         run: go test ./...
+        working-directory: wms-app
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
