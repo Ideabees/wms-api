@@ -78,7 +78,13 @@ curl --location 'http://localhost:8080/api/register' `
   "token": "..."
 }
 ```
-
+```json
+{
+    "status_code": 409,
+    "error": "DuplicateError",
+    "message": "User with this email or mobile number already exists"
+}
+```
 ---
 
 ### 2. Login
