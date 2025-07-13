@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"wms-app/internal/errors"
 	"wms-app/internal/models/request"
 	"wms-app/internal/models/dbModels"
 	"wms-app/internal/services"
@@ -22,25 +23,42 @@ import (
 func Register(c *gin.Context) {
 	var req request.RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		errResp := errors.NewErrorResponse(
+			errors.ErrBadRequest,
+			"ValidationError",
+			err.Error(),
+		)
+		c.JSON(errResp.StatusCode, errResp)
 		return
 	}
 
 	if req.Password != req.ConfirmPassword {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Passwords do not match"})
+		errResp := errors.NewErrorResponse(
+			errors.ErrBadRequest,
+			"ValidationError",
+			"Passwords do not match",
+		)
+		c.JSON(errResp.StatusCode, errResp)
 		return
 	}
 
 	hash, err := utils.HashPassword(req.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Password encryption failed"})
+		errResp := errors.NewErrorResponse(
+			errors.ErrInternalServerError,
+			"EncryptionError",
+			"Password encryption failed",
+		)
+		c.JSON(errResp.StatusCode, errResp)
 		return
 	}
+
 	// Create UUID
 	id := utils.CreateUUID()
-
-	user := dbModels.User{
-		UserId: id,
+	
+	// Create user model
+	user := &dbModels.User{
+		UserId:       id,
 		FirstName:    req.FirstName,
 		MiddleName:   req.MiddleName,
 		LastName:     req.LastName,
@@ -49,21 +67,28 @@ func Register(c *gin.Context) {
 		MobileNumber: req.MobileNumber,
 	}
 
-	response, err := services.CreateUser(&user)
-	if  err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "User creation failed"})
+	// Call service to create user
+	resp, errResp := services.CreateUser(user)
+	if errResp != nil {
+		c.JSON(errResp.StatusCode, errResp)
 		return
 	}
 
-	token, err := utils.GenerateToken(user.UserId, user.Email, user.FirstName, user.LastName)
+	// Generate JWT token
+	token, err := utils.GenerateToken(resp.UserId, resp.Email, resp.FirstName, resp.LastName)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Token generation failed"})
+		errResp := errors.NewErrorResponse(
+			errors.ErrInternalServerError,
+			"TokenError",
+			"Failed to generate authentication token",
+		)
+		c.JSON(errResp.StatusCode, errResp)
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{
+	c.JSON(http.StatusOK, gin.H{
+		"data":    resp,
 		"message": "User registered successfully",
-		"data" : response,
 		"token":   token,
 	})
 }
