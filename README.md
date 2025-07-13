@@ -189,21 +189,28 @@ Content-Type: application/json
 **Request Example:**
 ```json
 {
-  "first_name": "c3",
-  "last_name": "sharma",
-  "mobile_number": "78934566764"
+    "first_name": "c3",
+    "last_name" : "sharma",
+    "mobile_number": "78934566753",
+    "email_id": "k3@gmail.com",
+    "city": "bsr",
+    "pincode": "203001"
 }
 ```
 
 **Curl Example:**
 ```powershell
-curl --location 'http://localhost:8080/v1/api/customer' `
---header 'Content-Type: application/json' `
---header 'Authorization: Bearer <your_token>' `
---data '{
+curl --location 'http://localhost:8080/v1/api/customer' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImV4cCI6MTc1MjY2ODg4NSwiZmlyc3ROYW1lIjoia3JpcGF0MiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiYzdkYzFjYWYtZDhhMi00YTQwLThjMjUtZjViNjdlNWE4M2JlIn0.vHTOO_sp-Ho1-vrtL0QSYyB7uME48BZOCp-DPvWMlgs' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImV4cCI6MTc1MjY2ODg4NSwiZmlyc3ROYW1lIjoia3JpcGF0MiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiYzdkYzFjYWYtZDhhMi00YTQwLThjMjUtZjViNjdlNWE4M2JlIn0.vHTOO_sp-Ho1-vrtL0QSYyB7uME48BZOCp-DPvWMlgs' \
+--data-raw '{
     "first_name": "c3",
-    "last_name": "sharma",
-    "mobile_number": "78934566764"
+    "last_name" : "sharma",
+    "mobile_number": "78934566753",
+    "email_id": "k3@gmail.com",
+    "city": "bsr",
+    "pincode": "203001"
 }'
 ```
 
