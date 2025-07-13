@@ -1,6 +1,3 @@
-docker compose build
-docker compose up
-curl --location --request DELETE 'http://localhost:8080/v1/api/customers' \
 
 # WhatsApp Management System API (wms-api)
 
