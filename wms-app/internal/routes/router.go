@@ -3,21 +3,31 @@ package routes
 import (
 	"wms-app/internal/controllers"
 	"wms-app/internal/utils"
-	"github.com/gin-gonic/gin"
+
 	"github.com/gin-contrib/cors"
-	"github.com/swaggo/gin-swagger"
-	"github.com/swaggo/files"
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/ulule/limiter/v3"
+	ginlimiter "github.com/ulule/limiter/v3/drivers/middleware/gin"
+	memory "github.com/ulule/limiter/v3/drivers/store/memory"
 )
 
 func SetupRoutes() *gin.Engine {
 	r := gin.Default()
 
+	// Rate limiter: 5 requests per second per IP
+	rate, _ := limiter.NewRateFromFormatted("5-M")
+	store := memory.NewStore()
+	instance := limiter.New(store, rate)
+	r.Use(ginlimiter.NewMiddleware(instance))
+
 	config := cors.DefaultConfig()
-    config.AllowOrigins = []string{"http://localhost:3000"} // Replace with your client's origin(s)
-    config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
-    config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
+	config.AllowOrigins = []string{"http://localhost:3000"} // Replace with your client's origin(s)
+	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
+	config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
 	config.AllowCredentials = true
-    r.Use(cors.New(config))
+	r.Use(cors.New(config))
 
 	r.POST("/api/register", controllers.Register)
 
