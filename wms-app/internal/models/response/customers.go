@@ -6,6 +6,8 @@ type GetCustomer struct {
 	LastName     string
 	MobileNumber string
 	EmailID      string
+	City         string
+	Pincode      string
 	CreatedBy    string
 	UpdatedOn    string
 }

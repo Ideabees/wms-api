@@ -19,6 +19,17 @@ docker compose up
 
 ---
 
+## API Documentation (Swagger)
+
+Swagger UI is available for interactive API documentation and testing.
+
+**Access Swagger UI:**
+```
+http://localhost:8080/swagger/index.html
+```
+
+---
+
 ## API Endpoints
 
 ### 1. Register User
@@ -226,13 +237,16 @@ curl --location 'http://localhost:8080/v1/api/customers' `
 {
   "data": [
     {
-      "CustomerId": "...",
-      "FirstName": "c1",
-      "LastName": "sharma",
-      "MobileNumber": "78934566760",
-      "CreatedBy": " ",
-      "UpdatedOn": "..."
-    }
+            "CustomerId": "e520cb0b-76c3-4028-9a80-a8cbec90fb53",
+            "FirstName": "test104",
+            "LastName": "Sharma",
+            "MobileNumber": "784352655",
+            "EmailID": "t104@gmail.com",
+            "City": "BLR",
+            "Pincode": "201005",
+            "CreatedBy": " ",
+            "UpdatedOn": "2025-07-13 12:35:30.024531 +0000 UTC"
+        }
     // ...more customers
   ],
   "message": "",
@@ -295,11 +309,19 @@ file=@"C:/KripaDev/Coding/wms-api/Bulk-customer-data.xlsx"
 
 **Curl Example (Windows):**
 ```powershell
-curl --location 'http://localhost:8080/v1/api/create_bulk_customers' `
---header 'Authorization: Bearer <your_token>' `
---form 'file=@"C:/KripaDev/Coding/wms-api/Bulk-customer-data.xlsx"'
+curl --location 'http://localhost:8080/v1/api/create_bulk_customers' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImV4cCI6MTc1MjY2ODg4NSwiZmlyc3ROYW1lIjoia3JpcGF0MiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiYzdkYzFjYWYtZDhhMi00YTQwLThjMjUtZjViNjdlNWE4M2JlIn0.vHTOO_sp-Ho1-vrtL0QSYyB7uME48BZOCp-DPvWMlgs' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImV4cCI6MTc1MjY2ODg4NSwiZmlyc3ROYW1lIjoia3JpcGF0MiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiYzdkYzFjYWYtZDhhMi00YTQwLThjMjUtZjViNjdlNWE4M2JlIn0.vHTOO_sp-Ho1-vrtL0QSYyB7uME48BZOCp-DPvWMlgs' \
+--form 'file=@"/C:/KripaDev/Coding/wms-api/Bulk-customer-data.xlsx"'
 ```
-
+**Response:**
+```json
+{
+    "failed_count": 0,
+    "message": "Bulk upload completed",
+    "success_count": 4
+}
+```
 ---
 
 # Notes

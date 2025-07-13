@@ -14,6 +14,8 @@ type Customer struct {
 	MobileNumber string
 	UserId       string
 	EmailID      string
+	City         string
+	Pincode      string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }

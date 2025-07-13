@@ -36,6 +36,8 @@ func GetCustomers(userID string, firstName string, lastName string) ([]response.
 		rsp.LastName = cust.LastName
 		rsp.MobileNumber = cust.MobileNumber
 		rsp.EmailID = cust.EmailID
+		rsp.City = cust.City
+		rsp.Pincode = cust.Pincode
 		rsp.UpdatedOn = cust.UpdatedAt.String()
 		rsp.CreatedBy = firstName + " " + lastName
 		resp = append(resp, rsp)

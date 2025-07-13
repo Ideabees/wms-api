@@ -5,6 +5,8 @@ import (
 	"wms-app/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/files"
 )
 
 func SetupRoutes() *gin.Engine {
@@ -32,5 +34,8 @@ func SetupRoutes() *gin.Engine {
 		protected.POST("/create_bulk_customers", controllers.CreateBulkCustomers)
 		protected.POST("/logout", controllers.Logout)
 	}
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	return r
 }

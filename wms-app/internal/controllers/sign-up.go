@@ -10,6 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
+// @Summary Register a new user
+// @Description Registers a user with the provided details
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param data body RegisterRequest true "User registration data"
+// @Success 200 {object} RegisterResponse
+// @Router /api/register [post]
 func Register(c *gin.Context) {
 	var req request.RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
