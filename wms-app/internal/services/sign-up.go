@@ -5,18 +5,41 @@ import (
 	"wms-app/config"
 	"wms-app/internal/models/dbModels"
 	"wms-app/internal/models/response"
+	"gorm.io/gorm"
 )
 
 
-func CreateUser(user *dbModels.User) (response.CreateUserRespone, error) {
+type DBInterface interface {
+	Create(value interface{}) DBResult
+}
 
+type DBResult interface {
+	Error() error
+}
+
+type GormDBResult struct {
+	result *gorm.DB
+}
+
+func (g GormDBResult) Error() error {
+	return g.result.Error
+}
+
+type GormDB struct {
+	db *gorm.DB
+}
+
+func (g GormDB) Create(value interface{}) DBResult {
+	return GormDBResult{result: g.db.Create(value)}
+}
+
+func CreateUserWithDB(db DBInterface, user *dbModels.User) (response.CreateUserRespone, error) {
 	var response response.CreateUserRespone
-	result := config.DB.Create(user)
-	if result.Error != nil {
+	result := db.Create(user)
+	if result.Error() != nil {
 		fmt.Println("Error in create user repository")
-		return response, result.Error
+		return response, result.Error()
 	}
-
 	// prep the response back
 	response.UserId = user.UserId
 	response.FirstName = user.FirstName
@@ -26,6 +49,10 @@ func CreateUser(user *dbModels.User) (response.CreateUserRespone, error) {
 	response.MobileNumber = user.MobileNumber
 	response.CreatedAt = user.CreatedAt.String()
 	response.UpdatedAt = user.UpdatedAt.String()
+	return response, nil
+}
 
-	return response, result.Error
+// Backward compatible wrapper
+func CreateUser(user *dbModels.User) (response.CreateUserRespone, error) {
+	return CreateUserWithDB(GormDB{db: config.DB}, user)
 }
