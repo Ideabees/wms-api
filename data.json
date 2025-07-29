@@ -84,3 +84,10 @@ email, mobile, first name, last name, role
 Hare Krishna Murari
 3:13 PM
 Role: Admin: 1, Manager: 2, Employee/Member: 3
+
+// add customer then call opt in api
+// send message to customer
+// receive message from customer
+// notification for new msg
+// mark read msg
+

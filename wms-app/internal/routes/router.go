@@ -45,6 +45,17 @@ func SetupRoutes() *gin.Engine {
 		protected.POST("/logout", controllers.Logout)
 	}
 
+	chater := r.Group("/v1/api/chat")
+	chater.Use(utils.JWTMiddleware())
+	{
+		chater.POST("/chats", controllers.CreateChat)
+		chater.GET("/chats/:chat_id", controllers.GetChat)
+		chater.GET("/users/:user_id/chats", controllers.GetUserChats)
+		chater.POST("/chats/:chat_id/messages", controllers.SendMessage)
+		chater.GET("/chats/:chat_id/messages", controllers.GetMessages)
+		chater.PUT("/messages/:message_id/read", controllers.MarkMessageRead)
+    }
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return r
