@@ -7,9 +7,18 @@ import (
 	"wms-app/internal/models/dbModels"
 	"wms-app/internal/models/request"
 	"wms-app/internal/models/response"
+	thirdparty "wms-app/internal/third-party"
 )
 
 func CreateCustomer(customer *dbModels.Customer) (string, error) {
+
+	// call third-party service to send opt-in message
+	_, err := thirdparty.MakeOptInRequest(customer.MobileNumber)
+	if err != nil {
+		fmt.Println("Error in sending opt-in request", err)
+		return "Failed to send opt-in message", err
+	}
+	// Insert customer into the database
 
 	result := config.DB.Create(customer)
 	if result.Error != nil {

@@ -3,6 +3,7 @@ package thirdparty
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"wms-app/config"
@@ -26,6 +27,9 @@ func MakeOptInRequest(phoneNumber string) (string, error) {
 
 	// Make the request
 	client := &http.Client{}
+	fmt.Println("Sending opt-in request to:", url)
+	fmt.Println("Request body:", string(data))
+	fmt.Println("Headers:", req.Header)
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
@@ -39,8 +43,8 @@ func MakeOptInRequest(phoneNumber string) (string, error) {
 	}
 
 	// Check for non-200 status codes
-	if resp.StatusCode != http.StatusOK {
-		return "", errors.New("non-200 response: " + string(body))
+	if resp.StatusCode != http.StatusAccepted {
+		return "", errors.New("non-200 response: " + string(body) + " status code: " + fmt.Sprint(resp.StatusCode))
 	}
 
 	return string(body), nil

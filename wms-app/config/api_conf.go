@@ -13,8 +13,8 @@ const (
 	APIMaxRetries    = 3
 
 	// Endpoints
-	EndpointOptInNumber = "/sm/api/v1/app/opt/in/appname"
+	EndpointOptInNumber = "/sm/api/v1/app/opt/in/convoEngage"
 	EndpointSendMessage = "/wa/api/v1/msg"
 	AppName             = "convoEngage"
-	APIKey              = "<Your API Key>" // Replace with your actual API key
+	APIKey              = "<YOUR_API_KEY>" // Replace with your actual API key
 )
