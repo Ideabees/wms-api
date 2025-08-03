@@ -8,6 +8,8 @@ import (
 
 // CreateChat handles the creation of a new chat
 func CreateChat(c *gin.Context) {
+	// TODO: Implement chat creation logic
+	
 	c.JSON(http.StatusOK, gin.H{"message": "Chat created successfully"})
 }
 
