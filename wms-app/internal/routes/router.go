@@ -54,6 +54,7 @@ func SetupRoutes() *gin.Engine {
 		chater.POST("/chats/:chat_id/messages", controllers.SendMessage)
 		chater.GET("/chats/:chat_id/messages", controllers.GetMessages)
 		chater.PUT("/messages/:message_id/read", controllers.MarkMessageRead)
+		chater.POST("chats/send/message", controllers.SendMessageOneToOne)
     }
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

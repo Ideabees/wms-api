@@ -1,4 +1,3 @@
-
 # WhatsApp Management System API (wms-api)
 
 This API provides endpoints for managing WhatsApp customers and users. Below are instructions for setup and usage.
@@ -332,6 +331,45 @@ curl --location 'http://localhost:8080/v1/api/create_bulk_customers' \
     "success_count": 4
 }
 ```
+---
+
+### 9. Send Chat Message
+
+**Endpoint:** `POST /v1/api/chat/chats/send/message`
+
+**Headers:**
+```
+Authorization: Bearer <your_token>
+Content-Type: application/json
+```
+
+**Request Example:**
+```json
+{
+    "receiver_mobile_number": "917892360471",
+    "message": "Kripa, we have an exciting offer for you."
+}
+```
+
+**Curl Example:**
+```powershell
+curl --location 'http://localhost:8080/v1/api/chat/chats/send/message' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtyaXBhdGVzdDEwMkBnbWFpbC5jb20iLCJleHAiOjE3NTQ1MDA3MDQsImZpcnN0TmFtZSI6ImtyaXBhdGVzdDEwMiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiMGU5MDUyOWUtM2IwMi00YjI0LThkY2EtNDQzNmNkOThjMjgzIn0.npsqLIN6VS7QmkTGj_wI20NgWLa3mETpSOXbCtMwWqQ' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtyaXBhdGVzdDEwMkBnbWFpbC5jb20iLCJleHAiOjE3NTQ1MDA3MDQsImZpcnN0TmFtZSI6ImtyaXBhdGVzdDEwMiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiMGU5MDUyOWUtM2IwMi00YjI0LThkY2EtNDQzNmNkOThjMjgzIn0.npsqLIN6VS7QmkTGj_wI20NgWLa3mETpSOXbCtMwWqQ' \
+--data '{
+    "receiver_mobile_number":"917892360471",
+    "message": "Kripa, we have an exciting offer for you."
+}'
+```
+
+**Response:**
+```json
+{
+    "message": "Message sent successfully"
+}
+```
+
 ---
 
 # Notes

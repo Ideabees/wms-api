@@ -16,5 +16,5 @@ const (
 	EndpointOptInNumber = "/sm/api/v1/app/opt/in/convoEngage"
 	EndpointSendMessage = "/wa/api/v1/msg"
 	AppName             = "convoEngage"
-	APIKey              = "<YOUR_API_KEY>" // Replace with your actual API key
+	APIKey              = "<your_api_key>" // Replace with your actual API key
 )

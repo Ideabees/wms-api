@@ -3,6 +3,7 @@ package thirdparty
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -15,10 +16,10 @@ func SendMessageRequest(phoneNumber string, message string) (string, error) {
 	// Prepare the form data
 	formData := url.Values{}
 	formData.Set("channel", "whatsapp")
-	formData.Set("source", "<Your WhatsApp Number in E.164 format>") // Source is usually the WhatsApp number in E.164 format, but can be left empty if not required
+	formData.Set("source", "<your_whatsapp_number>") // Source is usually the WhatsApp number in E.164 format, but can be left empty if not required
 	formData.Set("destination", phoneNumber)
 	formData.Set("message", `{"type":"text","text":"`+message+`"}`)
-	formData.Set("src.name", "<Your WhatsApp Business Name>")
+	formData.Set("src.name", "<your_app_name>") // Replace with your app name
 
 	// Create a new POST request
 	req, err := http.NewRequest("POST", apiURL, bytes.NewBufferString(formData.Encode()))
@@ -47,8 +48,8 @@ func SendMessageRequest(phoneNumber string, message string) (string, error) {
 	}
 
 	// Check for non-200 status codes
-	if resp.StatusCode != http.StatusOK {
-		return "", errors.New("non-200 response: " + string(body))
+	if resp.StatusCode != http.StatusAccepted {
+		return "", errors.New("non-200 response: " + string(body) + " status code: " + fmt.Sprint(resp.StatusCode))
 	}
 
 	return string(body), nil

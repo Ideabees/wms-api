@@ -1,5 +1,8 @@
 package services
 
+import (
+	thirdparty "wms-app/internal/third-party"
+)
 
 func CreateChat(chatData map[string]interface{}) (map[string]interface{}, error) {
 	// TODO: Implement chat creation logic
@@ -25,4 +28,15 @@ func GetMessages(chatID string) ([]map[string]interface{}, error) {
 func MarkMessageRead(messageID string) (map[string]interface{}, error) {
 	// TODO: Implement mark message read logic
 	return map[string]interface{}{"message_id": messageID}, nil
+}
+
+func SendMessageOneToOne(receiverMobileNumber string, message string) (string, error) {
+	// TODO: Implement send one-to-one message logic
+	_, err := thirdparty.SendMessageRequest(receiverMobileNumber, message)
+
+	if err != nil {
+		return "Not able to send msg", err
+	}
+
+	return "Message sent successfully", nil
 }
