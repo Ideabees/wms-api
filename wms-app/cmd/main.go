@@ -8,7 +8,7 @@ import (
 
 func main() {
 	config.InitDB()
-	config.DB.AutoMigrate(&dbModels.User{}, &dbModels.Customer{})
+	config.DB.AutoMigrate(&dbModels.User{}, &dbModels.Customer{}, &dbModels.CreateChats{}, &dbModels.CreateMessages{})
 
 	r := routes.SetupRoutes()
 	r.Run(":8080")

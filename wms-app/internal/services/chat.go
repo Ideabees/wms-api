@@ -1,12 +1,29 @@
 package services
 
 import (
+	"fmt"
+	"wms-app/config"
+	"wms-app/internal/models/dbModels"
 	thirdparty "wms-app/internal/third-party"
 )
 
-func CreateChat(chatData map[string]interface{}) (map[string]interface{}, error) {
-	// TODO: Implement chat creation logic
-	return chatData, nil
+func CreateChat(createChat *dbModels.CreateChats) (string, error) {
+	// Insert customer into the database
+
+	// get customer ID by customer mobile number
+	var customerID string
+	if createChat.ReceiverMobileNumber != "" {
+		customerID = getCustomerID(createChat.ReceiverMobileNumber)
+	}
+
+	createChat.ReceiverID = customerID
+
+	result := config.DB.Create(createChat)
+	if result.Error != nil {
+		fmt.Println("Error in create user repository")
+		return "Failed", result.Error
+	}
+	return createChat.ChatID, nil
 }
 
 func GetChat(chatID string) (map[string]interface{}, error) {
@@ -39,4 +56,15 @@ func SendMessageOneToOne(receiverMobileNumber string, message string) (string, e
 	}
 
 	return "Message sent successfully", nil
+}
+
+
+func getCustomerID(mobileNumber string) string {
+	// TODO: Implement logic to retrieve customer ID based on mobile number
+	var customer dbModels.Customer
+	result := config.DB.Where("customers.mobile_number = ?", mobileNumber).First(&customer)
+	if result.Error != nil {
+		return ""
+	}
+	return customer.CustomerId
 }

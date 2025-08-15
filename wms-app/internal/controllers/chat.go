@@ -2,8 +2,11 @@ package controllers
 
 import (
 	"net/http"
+	"time"
+	"wms-app/internal/models/dbModels"
 	"wms-app/internal/models/request"
 	"wms-app/internal/services"
+	"wms-app/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,7 +15,30 @@ import (
 func CreateChat(c *gin.Context) {
 	// TODO: Implement chat creation logic
 
-	c.JSON(http.StatusOK, gin.H{"message": "Chat created successfully"})
+	chatRequest := request.CreateChat{}
+	if err := c.ShouldBindJSON(&chatRequest); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	chat_id := utils.CreateUUID()
+
+	chat := dbModels.CreateChats{
+		ChatID:               chat_id,
+		SenderID:             c.GetString("user_id"),
+		ReceiverID:           "",
+		ReceiverMobileNumber: chatRequest.ReceiverMobileNumber,
+		Created_At:           time.Now(),
+	}
+
+	// Call the service to create the chat
+	id, err := services.CreateChat(&chat)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Not able to create chat", "details": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Chat created successfully", "chat_id": id})
 }
 
 // GetChat retrieves a specific chat by ID
