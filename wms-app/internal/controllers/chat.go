@@ -50,7 +50,12 @@ func GetChat(c *gin.Context) {
 // GetUserChats retrieves all chats for a specific user
 func GetUserChats(c *gin.Context) {
 	userID := c.Param("user_id")
-	c.JSON(http.StatusOK, gin.H{"message": "User chats retrieved successfully", "user_id": userID})
+	data, err := services.GetUserChats(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Not able to retrieve user chats", "details": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "User chats retrieved successfully", "user_id": userID, "data": data})
 }
 
 // SendMessage handles sending a message to a chat

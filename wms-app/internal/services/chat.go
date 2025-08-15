@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"wms-app/config"
 	"wms-app/internal/models/dbModels"
+	"wms-app/internal/models/response"
 	thirdparty "wms-app/internal/third-party"
 )
 
@@ -30,9 +31,27 @@ func GetChat(chatID string) (map[string]interface{}, error) {
 	// TODO: Implement chat retrieval logic
 	return map[string]interface{}{"chat_id": chatID}, nil
 }
-func GetUserChats(userID string) ([]map[string]interface{}, error) {
+func GetUserChats(userID string) (response.GetUserChatsResponse, error) {
 	// TODO: Implement user chats retrieval logic
-	return []map[string]interface{}{{"user_id": userID}}, nil
+	// fetch from db
+	var chats []dbModels.CreateChats
+	result := config.DB.Where("sender_id = ?", userID).Find(&chats)
+	if result.Error != nil {
+		return response.GetUserChatsResponse{}, result.Error
+	}
+
+	var responseChats []response.Chat
+	for _, chat := range chats {
+		responseChats = append(responseChats, response.Chat{
+			ChatID:               chat.ChatID,
+			SenderID:             chat.SenderID,
+			ReceiverID:           chat.ReceiverID,
+			ReceiverMobileNumber: chat.ReceiverMobileNumber,
+			CreatedAt:            chat.CreatedAt,
+		})
+	}
+
+	return response.GetUserChatsResponse{Chats: responseChats}, nil
 }
 func SendMessage(chatID string, messageData map[string]interface{}) (map[string]interface{}, error) {
 	// TODO: Implement send message logic
@@ -57,7 +76,6 @@ func SendMessageOneToOne(receiverMobileNumber string, message string) (string, e
 
 	return "Message sent successfully", nil
 }
-
 
 func getCustomerID(mobileNumber string) string {
 	// TODO: Implement logic to retrieve customer ID based on mobile number

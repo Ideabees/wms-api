@@ -2,14 +2,15 @@ package dbModels
 
 import (
 	"time"
+
 	"gorm.io/gorm"
 )
 
 type CreateChats struct {
 	gorm.Model
 	ChatID               string `gorm:"primaryKey;autoIncrement:false"`
-	SenderID             string
-	ReceiverID           string
+	SenderID             string `gorm:"type:string;not null;uniqueIndex:idx_sender_receiver"`
+	ReceiverID           string `gorm:"type:string;not null;uniqueIndex:idx_sender_receiver"`
 	ReceiverMobileNumber string
 	Created_At           time.Time
 }
