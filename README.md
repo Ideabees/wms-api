@@ -369,6 +369,153 @@ curl --location 'http://localhost:8080/v1/api/chat/create/one-to-one' \
 }
 ```
 
+### 10. Get ALL Chats
+**Endpoint:** `GET /v1/api/chat/users/0e90529e-3b02-4b24-8dca-4436cd98c283/chats`
+
+**Headers:**
+```
+Authorization: Bearer <your_token>
+Content-Type: application/json
+```
+
+
+**Curl Example:**
+```powershell
+curl --location 'http://localhost:8080/v1/api/chat/users/0e90529e-3b02-4b24-8dca-4436cd98c283/chats' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtyaXBhdGVzdDEwMkBnbWFpbC5jb20iLCJleHAiOjE3NTU1MDczODAsImZpcnN0TmFtZSI6ImtyaXBhdGVzdDEwMiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiMGU5MDUyOWUtM2IwMi00YjI0LThkY2EtNDQzNmNkOThjMjgzIn0.oG127oDzekU-cVpIQAMh1EuycMrrimk-ubph04IrZlw' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtyaXBhdGVzdDEwMkBnbWFpbC5jb20iLCJleHAiOjE3NTU1MDczODAsImZpcnN0TmFtZSI6ImtyaXBhdGVzdDEwMiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiMGU5MDUyOWUtM2IwMi00YjI0LThkY2EtNDQzNmNkOThjMjgzIn0.oG127oDzekU-cVpIQAMh1EuycMrrimk-ubph04IrZlw'
+```
+
+**Response:**
+```json
+{
+    "data": {
+        "chats": [
+            {
+                "chat_id": "0aa2fb89-da9f-4222-9ee9-df8ad163080a",
+                "sender_id": "0e90529e-3b02-4b24-8dca-4436cd98c283",
+                "receiver_id": "1dd93fa6-3b45-438f-ade7-4f8a5c152ddc",
+                "receiver_mobile_number": "9185279364510",
+                "created_at": "2025-08-15T08:56:30.537297Z"
+            },
+            {
+                "chat_id": "585404cf-b2ec-4aa4-a6a3-e8c637d25194",
+                "sender_id": "0e90529e-3b02-4b24-8dca-4436cd98c283",
+                "receiver_id": "419f5b55-818c-429a-ad75-d77a3ccb281b",
+                "receiver_mobile_number": "917892360471",
+                "created_at": "2025-08-15T10:05:14.181979Z"
+            }
+        ]
+    },
+    "message": "User chats retrieved successfully",
+    "user_id": "0e90529e-3b02-4b24-8dca-4436cd98c283"
+}
+```
+
+### 11. Send Message one to one
+**Endpoint:** `POST http://localhost:8080/v1/api/chat/one-to-one/messages`
+
+**Headers:**
+```
+Authorization: Bearer <your_token>
+Content-Type: application/json
+```
+
+**Request Example:**
+```json
+{
+"chat_id": "0aa2fb89-da9f-4222-9ee9-df8ad163080a",
+"receiver_id": "1dd93fa6-3b45-438f-ade7-4f8a5c152ddc",
+"receiver_mobile_number": "9185279364510",
+"message": "Kindly, reach out to info@abc.com",
+"message_type": "text"
+}
+```
+
+**Curl Example:**
+```powershell
+curl --location 'http://localhost:8080/v1/api/chat/one-to-one/messages' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtyaXBhdGVzdDEwMkBnbWFpbC5jb20iLCJleHAiOjE3NTU1MDczODAsImZpcnN0TmFtZSI6ImtyaXBhdGVzdDEwMiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiMGU5MDUyOWUtM2IwMi00YjI0LThkY2EtNDQzNmNkOThjMjgzIn0.oG127oDzekU-cVpIQAMh1EuycMrrimk-ubph04IrZlw' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtyaXBhdGVzdDEwMkBnbWFpbC5jb20iLCJleHAiOjE3NTU1MDczODAsImZpcnN0TmFtZSI6ImtyaXBhdGVzdDEwMiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiMGU5MDUyOWUtM2IwMi00YjI0LThkY2EtNDQzNmNkOThjMjgzIn0.oG127oDzekU-cVpIQAMh1EuycMrrimk-ubph04IrZlw' \
+--data-raw '{
+"chat_id": "0aa2fb89-da9f-4222-9ee9-df8ad163080a",
+"receiver_id": "1dd93fa6-3b45-438f-ade7-4f8a5c152ddc",
+"receiver_mobile_number": "9185279364510",
+"message": "Kindly, reach out to info@abc.com",
+"message_type": "text"
+}'
+```
+
+**Response:**
+```json
+{
+    "message": "Message sent successfully",
+    "msg_id": "28fd7424-d9d1-416f-aed2-3d7706453349"
+}
+```
+
+### 12. Get all Messages from based on chat id
+**Endpoint:** `GET /v1/api/chat/0aa2fb89-da9f-4222-9ee9-df8ad163080a/messages`
+
+**Headers:**
+```
+Authorization: Bearer <your_token>
+Content-Type: application/json
+```
+
+
+**Curl Example:**
+```powershell
+curl --location 'http://localhost:8080/v1/api/chat/0aa2fb89-da9f-4222-9ee9-df8ad163080a/messages' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtyaXBhdGVzdDEwMkBnbWFpbC5jb20iLCJleHAiOjE3NTU1MDczODAsImZpcnN0TmFtZSI6ImtyaXBhdGVzdDEwMiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiMGU5MDUyOWUtM2IwMi00YjI0LThkY2EtNDQzNmNkOThjMjgzIn0.oG127oDzekU-cVpIQAMh1EuycMrrimk-ubph04IrZlw' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtyaXBhdGVzdDEwMkBnbWFpbC5jb20iLCJleHAiOjE3NTU1MDczODAsImZpcnN0TmFtZSI6ImtyaXBhdGVzdDEwMiIsImxhc3ROYW1lIjoic2hhcm1hIiwidXNlcklkIjoiMGU5MDUyOWUtM2IwMi00YjI0LThkY2EtNDQzNmNkOThjMjgzIn0.oG127oDzekU-cVpIQAMh1EuycMrrimk-ubph04IrZlw'
+```
+
+**Response:**
+```json
+{
+    "chat_id": "0aa2fb89-da9f-4222-9ee9-df8ad163080a",
+    "data": {
+        "messages": [
+            {
+                "message_id": "be25aeb5-76e9-40cb-988e-7d13c98e7ea9",
+                "chat_id": "0aa2fb89-da9f-4222-9ee9-df8ad163080a",
+                "sender_id": "0e90529e-3b02-4b24-8dca-4436cd98c283",
+                "message_type": "text",
+                "content": "I will get back to you",
+                "media_url": "",
+                "is_read_by_receiver": "false",
+                "created_at": "2025-08-15T16:31:55.513354Z",
+                "updated_at": "2025-08-15T16:31:55.513354Z"
+            },
+            {
+                "message_id": "75d83d01-110d-4f02-9ad5-1c569a0f359d",
+                "chat_id": "0aa2fb89-da9f-4222-9ee9-df8ad163080a",
+                "sender_id": "0e90529e-3b02-4b24-8dca-4436cd98c283",
+                "message_type": "text",
+                "content": "Hello, welcome to my team",
+                "media_url": "",
+                "is_read_by_receiver": "false",
+                "created_at": "2025-08-15T16:32:38.120366Z",
+                "updated_at": "2025-08-15T16:32:38.120366Z"
+            },
+            {
+                "message_id": "28fd7424-d9d1-416f-aed2-3d7706453349",
+                "chat_id": "0aa2fb89-da9f-4222-9ee9-df8ad163080a",
+                "sender_id": "0e90529e-3b02-4b24-8dca-4436cd98c283",
+                "message_type": "text",
+                "content": "Kindly, reach out to info@abc.com",
+                "media_url": "",
+                "is_read_by_receiver": "false",
+                "created_at": "2025-08-15T16:32:58.726245Z",
+                "updated_at": "2025-08-15T16:32:58.726245Z"
+            }
+        ]
+    },
+    "message": "Messages retrieved successfully"
+}
+```
 ---
 
 # Notes

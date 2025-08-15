@@ -53,13 +53,55 @@ func GetUserChats(userID string) (response.GetUserChatsResponse, error) {
 
 	return response.GetUserChatsResponse{Chats: responseChats}, nil
 }
-func SendMessage(chatID string, messageData map[string]interface{}) (map[string]interface{}, error) {
-	// TODO: Implement send message logic
-	return messageData, nil
+func SendMessage(msg *dbModels.CreateMessages) (string, error) {
+	result := config.DB.Create(msg)
+	if result.Error != nil {
+		return "", result.Error
+	}
+	// send msg to third-party service
+
+	return msg.MessageID, nil
 }
-func GetMessages(chatID string) ([]map[string]interface{}, error) {
-	// TODO: Implement get messages logic
-	return []map[string]interface{}{{"chat_id": chatID}}, nil
+
+
+func GetMessages(chatID string) (response.GetMessagesResponse, error) {
+
+	var messages []dbModels.CreateMessages
+
+	result := config.DB.Where("chat_id = ?", chatID).Find(&messages)
+	if result.Error != nil {
+		fmt.Println("Error retrieving messages for chat ID:", chatID, "Error:", result.Error)
+		return response.GetMessagesResponse{}, result.Error
+	}
+	fmt.Println("Messages retrieved successfully for chat ID:", chatID)
+
+	var responseMessages []response.Message
+
+	fmt.Println("Processing messages for chat ID:", chatID)
+	if len(messages) == 0 {
+		fmt.Println("No messages found for chat ID:", chatID)
+	} else {
+		fmt.Println("Messages found for chat ID:", chatID)
+	}
+	// Process each message and map to response format
+
+	for _, msg := range messages {
+		fmt.Println("Processing message:", msg.MessageID)
+		responseMessages = append(responseMessages, response.Message{
+			MessageID:        msg.MessageID,
+			ChatID:           msg.ChatID,
+			SenderID:         msg.SenderID,
+			MessageType:      msg.MessageType,
+			Content:          msg.Content,
+			MediaURL:         msg.MediaURL,
+			IsReadByReceiver: msg.IsReadByReceiver,
+			CreatedAt:        msg.CreatedAt,
+			UpdatedAt:        msg.UpdatedAt,
+		})
+	}
+	fmt.Println("All messages processed for chat ID:", chatID)
+
+	return response.GetMessagesResponse{Messages: responseMessages}, nil
 }
 func MarkMessageRead(messageID string) (map[string]interface{}, error) {
 	// TODO: Implement mark message read logic

@@ -28,7 +28,7 @@ func CreateChat(c *gin.Context) {
 		SenderID:             c.GetString("user_id"),
 		ReceiverID:           "",
 		ReceiverMobileNumber: chatRequest.ReceiverMobileNumber,
-		Created_At:           time.Now(),
+		CreatedAt:           time.Now(),
 	}
 
 	// Call the service to create the chat
@@ -60,14 +60,53 @@ func GetUserChats(c *gin.Context) {
 
 // SendMessage handles sending a message to a chat
 func SendMessage(c *gin.Context) {
-	chatID := c.Param("chat_id")
-	c.JSON(http.StatusOK, gin.H{"message": "Message sent successfully", "chat_id": chatID})
+	var messageData request.SendMessageOneToOne
+	if err := c.ShouldBindJSON(&messageData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Call the service to send the message
+
+	// build db models mapper
+
+	msg_id := utils.CreateUUID()
+	var msg dbModels.CreateMessages
+
+	if messageData.MessageType == "text" {
+		// Handle text message specific logic
+		msg.MessageID = msg_id
+		msg.ChatID = messageData.ChatID
+		msg.SenderID = c.GetString("user_id")
+		msg.MessageType = messageData.MessageType
+		msg.Content = messageData.Message
+		msg.MediaURL = ""
+		msg.IsReadByReceiver = "false"
+		msg.CreatedAt = time.Now()
+		msg.UpdatedAt = time.Now()
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "send only text type"})
+	}
+
+	_, err := services.SendMessage(&msg)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Not able to send message", "details": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Message sent successfully", "msg_id": msg.MessageID})
 }
 
 // GetMessages retrieves all messages for a specific chat
 func GetMessages(c *gin.Context) {
 	chatID := c.Param("chat_id")
-	c.JSON(http.StatusOK, gin.H{"message": "Messages retrieved successfully", "chat_id": chatID})
+	data, err := services.GetMessages(chatID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Not able to retrieve messages", "details": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Messages retrieved successfully", "chat_id": chatID, "data": data})
 }
 
 // MarkMessageRead marks a specific message as read
